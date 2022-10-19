@@ -5,7 +5,7 @@ import { TodoItem } from "../models/TodoItem";
 import { TodoUpdate } from "../models/TodoUpdate";
 import * as AWSXRay from "aws-xray-sdk";
 
-// const XAWS = AWSXRay.captureAWS(AWS);
+const XAWS = AWSXRay.captureAWS(AWS);
 
 // const docClient = new XAWS,DynamoDB.DocumentClient()
 
