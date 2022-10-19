@@ -4,6 +4,7 @@ service: server-todo
 
 plugins:
   - serverless-webpack
+  - serverless-aws-documentation
   - serverless-iam-roles-per-function
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
@@ -16,13 +17,15 @@ provider:
   
 #  X-Ray Tracing
   tracing: 
-    lambda: true
     apiGateway: true
-
-  environment:
+    lambda: true
+    
+ # Use these variables in the functions and resouorces section below. For example, ${self:provider.environment.ATTACHMENT_S3_BUCKET}
+   environment:
     PROJECT_NAME: server-todo
     TODOS_TABLE: server-todo-${self:provider.stage}
     S3_BUCKET_NAME: server-todo-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
 
 custom:
   documentation:
@@ -66,7 +69,9 @@ functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  # TODO: Configure this function
+  # TODO: Configure this function - 
+  # Provide iamRoleStatements property for performing Actions on DynamoDB
+
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
@@ -87,7 +92,8 @@ functions:
         Resource: 
           - '*'
 
-  # TODO: Configure this function
+  # TODO: Configure this function - 
+  # Provide iamRoleStatements property for performing Actions on DynamoDB
  
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -142,7 +148,8 @@ functions:
         Resource: 
           - '*'
 
-  # DELETE: Configure this function
+ # TODO: Configure this function to delete
+  # Provide iamRoleStatements property for performing Actions on DynamoDB
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
